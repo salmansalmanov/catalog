@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.2-create-users-table
+      author: salmansalmanov (generated)
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    unique: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+              - column:
+                  name: username
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: phone_number
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: city_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: profile_photo_id
+                  type: UUID
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: city_id
+            referencedTableName: cities
+            referencedColumnNames: id
+            constraintName: fk_users_city_id
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: profile_photo_id
+            referencedTableName: images
+            referencedColumnNames: id
+            constraintName: fk_users_profile_photo_id

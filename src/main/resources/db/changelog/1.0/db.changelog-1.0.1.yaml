@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.1-create-images-table
+      author: salmansalmanov
+      changes:
+        - createTable:
+            tableName: images
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    unique: true
+                    nullable: false
+              - column:
+                  name: original_file_name
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+              - column:
+                  name: changed_file_name
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
