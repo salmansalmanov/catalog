@@ -3,6 +3,7 @@ package com.catalog.mapper;
 import com.catalog.model.dto.request.RegisterRequest;
 import com.catalog.model.dto.response.UserResponse;
 import com.catalog.model.entity.User;
+import com.catalog.model.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,11 +22,11 @@ public class UserMapper {
                 .surname(registerRequest.getSurname())
                 .username(registerRequest.getUsername())
                 .phoneNumber(registerRequest.getPhoneNumber())
+                .role(Role.USER)
                 .build();
     }
 
     public UserResponse toResponse(User user) {
-
         return UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())

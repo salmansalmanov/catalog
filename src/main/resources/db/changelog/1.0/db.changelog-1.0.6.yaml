@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.6-add-revoked-to-refresh-tokens
+      author: salmansalmanov
+      changes:
+        - addColumn:
+            tableName: refresh_tokens
+            columns:
+              - column:
+                  name: revoked
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false

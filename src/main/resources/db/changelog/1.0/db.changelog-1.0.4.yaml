@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.4-add-role-to-users
+      author: salmansalmanov (generated)
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: role
+                  type: VARCHAR
+                  constraints:
+                    nullable: false

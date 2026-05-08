@@ -1,6 +1,8 @@
 package com.catalog.controller;
 
+import com.catalog.model.dto.request.LoginRequest;
 import com.catalog.model.dto.request.RegisterRequest;
+import com.catalog.model.dto.response.LoginResponse;
 import com.catalog.model.dto.response.UserResponse;
 import com.catalog.model.result.DataResult;
 import com.catalog.service.abstraction.AuthService;
@@ -8,10 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -28,5 +27,12 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(authService.register(registerRequest, profilePhoto));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<DataResult<LoginResponse>> login(@RequestBody @Valid LoginRequest loginRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(authService.login(loginRequest));
     }
 }

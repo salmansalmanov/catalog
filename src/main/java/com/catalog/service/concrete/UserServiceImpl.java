@@ -15,6 +15,7 @@ import com.catalog.repository.UserRepository;
 import com.catalog.service.abstraction.FileService;
 import com.catalog.service.abstraction.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final CityRepository cityRepository;
     private final FileService fileService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public DataResult<UserResponse> save(RegisterRequest registerRequest, MultipartFile profilePhoto) {
@@ -34,7 +36,7 @@ public class UserServiceImpl implements UserService {
         user.setCity(city);
         Image image = fileService.upload(profilePhoto);
         user.setProfilePhoto(image);
-
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         User savedUser = userRepository.save(user);
         return new SuccessDataResult<>(userMapper.toResponse(savedUser), "User created successfully");
     }
