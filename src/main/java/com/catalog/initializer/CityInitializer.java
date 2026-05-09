@@ -21,7 +21,7 @@ public class CityInitializer implements CommandLineRunner {
 
     private void createCityIfNotExists(String name) {
         if (!cityRepository.existsByName(name)) {
-            cityRepository.save(new City(name));
+            cityRepository.save(City.builder().name(name).build());
         }
     }
 }
