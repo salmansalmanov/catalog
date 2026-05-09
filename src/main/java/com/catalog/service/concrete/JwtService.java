@@ -1,5 +1,7 @@
 package com.catalog.service.concrete;
 
+import com.catalog.exception.custom.InvalidTokenException;
+import com.catalog.model.entity.RefreshTokenEntity;
 import com.catalog.model.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -83,5 +86,14 @@ public class JwtService {
 
     public boolean isTokenExpired(String token, boolean isRefreshToken) {
         return extractClaim(token, Claims::getExpiration, isRefreshToken).before(new Date());
+    }
+
+    public void checkRefreshToken(RefreshTokenEntity refreshTokenEntity) {
+        if (refreshTokenEntity.getRevoked()) {
+            throw new InvalidTokenException("Refresh token is revoked");
+        }
+        if (refreshTokenEntity.getExpiration().isBefore(LocalDateTime.now())) {
+            throw new InvalidTokenException("Refresh token is expired");
+        }
     }
 }

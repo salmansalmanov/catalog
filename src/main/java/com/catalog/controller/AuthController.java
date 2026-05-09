@@ -2,7 +2,9 @@ package com.catalog.controller;
 
 import com.catalog.model.dto.request.LoginRequest;
 import com.catalog.model.dto.request.RegisterRequest;
+import com.catalog.model.dto.request.TokenRefreshRequest;
 import com.catalog.model.dto.response.LoginResponse;
+import com.catalog.model.dto.response.TokenRefreshResponse;
 import com.catalog.model.dto.response.UserResponse;
 import com.catalog.model.result.DataResult;
 import com.catalog.service.abstraction.AuthService;
@@ -34,5 +36,12 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(authService.login(loginRequest));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<DataResult<TokenRefreshResponse>> refresh(@RequestBody @Valid TokenRefreshRequest tokenRefreshRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(authService.refresh(tokenRefreshRequest));
     }
 }

@@ -5,7 +5,9 @@ import com.catalog.exception.custom.NotFoundException;
 import com.catalog.mapper.RefreshTokenMapper;
 import com.catalog.model.dto.request.LoginRequest;
 import com.catalog.model.dto.request.RegisterRequest;
+import com.catalog.model.dto.request.TokenRefreshRequest;
 import com.catalog.model.dto.response.LoginResponse;
+import com.catalog.model.dto.response.TokenRefreshResponse;
 import com.catalog.model.dto.response.UserResponse;
 import com.catalog.model.entity.RefreshTokenEntity;
 import com.catalog.model.entity.User;
@@ -87,5 +89,24 @@ public class AuthServiceImpl implements AuthService {
         refreshTokenRepository.save(refreshTokenEntity);
         LoginResponse loginResponse = new LoginResponse(accessToken, refreshToken);
         return new SuccessDataResult<>(loginResponse, "Login successful");
+    }
+
+    @Override
+    @Transactional
+    public DataResult<TokenRefreshResponse> refresh(TokenRefreshRequest tokenRefreshRequest) {
+        RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByToken(tokenRefreshRequest.getRefreshToken())
+                .orElseThrow(() -> new NotFoundException("Refresh token not found"));
+        jwtService.checkRefreshToken(refreshTokenEntity);
+
+        User user = refreshTokenEntity.getUser();
+        String newAccessToken = jwtService.generateAccessToken(user.getUsername(), user.getRole());
+        String newRefreshToken = jwtService.generateRefreshToken(user.getUsername(), user.getRole());
+
+        refreshTokenEntity.setToken(newRefreshToken);
+        refreshTokenEntity.setExpiration(LocalDateTime.now().plus(refreshTokenExpiration, ChronoUnit.MILLIS));
+        refreshTokenRepository.save(refreshTokenEntity);
+
+        TokenRefreshResponse tokenRefreshResponse = new TokenRefreshResponse(newAccessToken, newRefreshToken);
+        return new SuccessDataResult<>(tokenRefreshResponse, "Refresh token successful");
     }
 }

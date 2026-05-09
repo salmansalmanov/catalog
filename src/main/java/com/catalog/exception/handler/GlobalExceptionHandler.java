@@ -1,6 +1,7 @@
 package com.catalog.exception.handler;
 
 import com.catalog.exception.custom.AlreadyExistsException;
+import com.catalog.exception.custom.InvalidTokenException;
 import com.catalog.exception.custom.NotFoundException;
 import com.catalog.model.result.ErrorResult;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResult> handleAlreadyExistsException(AlreadyExistsException ex) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
+                .body(new ErrorResult(ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ErrorResult> handleInvalidTokenException(InvalidTokenException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorResult(ex.getMessage()));
     }
 }

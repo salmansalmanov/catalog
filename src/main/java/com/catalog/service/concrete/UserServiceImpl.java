@@ -1,7 +1,6 @@
 package com.catalog.service.concrete;
 
 import com.catalog.exception.custom.NotFoundException;
-import com.catalog.mapper.ImageMapper;
 import com.catalog.mapper.UserMapper;
 import com.catalog.model.dto.request.RegisterRequest;
 import com.catalog.model.dto.response.UserResponse;
