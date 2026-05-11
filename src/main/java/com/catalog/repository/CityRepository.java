@@ -5,12 +5,13 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CityRepository extends JpaRepository<City, UUID> {
     boolean existsById(@NonNull UUID id);
 
-    boolean existsByName(String name);
-
     List<City> findAllByOrderByNameAsc();
+
+    Optional<City> findByName(String name);
 }
